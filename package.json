@@ -26,7 +26,7 @@
     "fmt:check": "prettier --color --list-different \"packages/*/**/*.{js,ts,yml,yaml}\" README.md \"packages/*/README.md\" tsconfig.json \"packages/*/tsconfig.json\"",
     "lint:ts": "tslint -p . -c tslint.json \"packages/*/src/**/*.ts\"",
     "test": "lerna run test",
-    "test:all": "yarn fmt:check && yarn lint:ts && yarn test",
+    "test:all": "yarn fmt:check && yarn lint:ts && yarn test && yarn build",
     "packages:pub": "lerna run tsc && lerna publish",
     "doc:serve": "gitbook serve",
     "doc:build": "gitbook build",
