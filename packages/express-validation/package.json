@@ -7,6 +7,9 @@
   "files": [
     "lib"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@ekino/api-toolkit-validation": "0.1.0"
   },
