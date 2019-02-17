@@ -18,6 +18,7 @@
     "joi": "^14.3.1"
   },
   "scripts": {
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "test": "jest"
   }
 }

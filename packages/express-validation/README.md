@@ -1,7 +1,7 @@
 # @ekino/express-validation
 
 This package helps validating/normalizing incoming express API requests
-using Joi schemas in the form of express middlewares.
+using [Joi](https://github.com/hapijs/joi) schemas in the form of express middlewares.
 
 It's written in TypeScript, so there's no need to install external types
 if you're working on a TypeScript based project.
@@ -10,10 +10,10 @@ a compiled version.
 
 It supports several _sources_:
 
-* [body](#validating-request-body)
-* [path](#validating-request-path)
-* [query](#validating-request-query)
-* [headers](#validating-request-headers)
+* [request body](#validating-request-body)
+* [request path](#validating-request-path)
+* [request query](#validating-request-query)
+* [request headers](#validating-request-headers)
 
 You can easily adapt it to your needs using the [configuration object](#configuration).
 
@@ -21,13 +21,18 @@ You can easily adapt it to your needs using the [configuration object](#configur
 
 ## Installation
 
+You also have to install [Joi](https://github.com/hapijs/joi) as it's a peer dependency
+of this package.
+
 ```sh
-yarn add @ekino/express-validation
+yarn add joi @ekino/express-validation
 ```
 
 ## Usage
 
 ### Validating request body
+
+javascript:
 
 ```js
 const { withBodyValidation } = require('@ekino/express-validation')
@@ -37,7 +42,19 @@ app.post('/post', withBodyValidation(), (req, res) => {
 })
 ```
 
+TypeScript:
+
+```typescript
+import { withBodyValidation } from '@ekino/express-validation'
+
+app.post('/post', withBodyValidation(), (req, res) => {
+
+})
+```
+
 ### Validating request path
+
+javascript:
 
 ```js
 const { withPathValidation } = require('@ekino/express-validation')
@@ -47,7 +64,19 @@ app.get('/post/:id', withPathValidation(), (req, res) => {
 })
 ```
 
+TypeScript:
+
+```typescript
+import { withPathValidation } from '@ekino/express-validation'
+
+app.get('/post/:id', withPathValidation(), (req, res) => {
+
+})
+```
+
 ### Validating request query
+
+javascript:
 
 ```js
 const { withQueryValidation } = require('@ekino/express-validation')
@@ -57,10 +86,32 @@ app.get('/posts', withQueryValidation(), (req, res) => {
 })
 ```
 
+TypeScript:
+
+```typescript
+import { withQueryValidation } from '@ekino/express-validation'
+
+app.get('/posts', withQueryValidation(), (req, res) => {
+
+})
+```
+
 ### Validating request headers
+
+javascript:
 
 ```js
 const { withHeadersValidation } = require('@ekino/express-validation')
+
+app.get('/posts', withHeadersValidation(), (req, res) => {
+
+})
+```
+
+TypeScript:
+
+```typescript
+import { withHeadersValidation } from '@ekino/express-validation'
 
 app.get('/posts', withHeadersValidation(), (req, res) => {
 
