@@ -1,6 +1,3 @@
 # Node.js API toolkit
 
-packages:
-
--   @ekino/express-logger
--   @ekino/express-validation
+This project provides a set of tools to ease API development.

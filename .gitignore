@@ -2,3 +2,4 @@ node_modules
 *.log*
 .idea
 packages/*/lib
+_book
