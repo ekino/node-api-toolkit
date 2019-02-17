@@ -11,3 +11,5 @@
 
 * core
     * [@ekino/api-toolkit-validation](packages/api-toolkit-validation/README.md)
+
+* [contributing](CONTRIBUTING.md)
