@@ -222,6 +222,19 @@
             
         </li>
     
+        <li class="chapter " data-level="1.4" data-path="../../CONTRIBUTING.html">
+            
+                <a href="../../CONTRIBUTING.html">
+            
+                    
+                    contributing
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
 
@@ -268,54 +281,73 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="ekinoexpress-validation">@ekino/express-validation</h1>
+<p><a href="https://www.npmjs.com/package/@ekino/express-validation" target="_blank"><img src="https://img.shields.io/npm/v/@ekino/express-validation.svg?style=flat-square" alt="version"></a></p>
 <p>This package helps validating/normalizing incoming express API requests
-using Joi schemas in the form of express middlewares.</p>
+using <a href="https://github.com/hapijs/joi" target="_blank">Joi</a> schemas in the form of express middlewares.</p>
 <p>It&apos;s written in TypeScript, so there&apos;s no need to install external types
 if you&apos;re working on a TypeScript based project.
 However TypeScript is not required as the published package contains
 a compiled version.</p>
 <p>It supports several <em>sources</em>:</p>
 <ul>
-<li><a href="#validating-request-body">body</a></li>
-<li><a href="#validating-request-path">path</a></li>
-<li><a href="#validating-request-query">query</a></li>
-<li><a href="#validating-request-headers">headers</a></li>
+<li><a href="#validating-request-body">request body</a></li>
+<li><a href="#validating-request-path">request path</a></li>
+<li><a href="#validating-request-query">request query</a></li>
+<li><a href="#validating-request-headers">request headers</a></li>
 </ul>
 <p>You can easily adapt it to your needs using the <a href="#configuration">configuration object</a>.</p>
 <blockquote>
 <p>Please be aware that the provided middlewares mutate the request data.</p>
 </blockquote>
 <h2 id="installation">Installation</h2>
-<pre><code class="lang-sh">yarn add @ekino/express-validation
+<p>You also have to install <a href="https://github.com/hapijs/joi" target="_blank">Joi</a> as it&apos;s a peer dependency
+of this package.</p>
+<pre><code class="lang-sh">yarn add joi @ekino/express-validation
 </code></pre>
 <h2 id="usage">Usage</h2>
 <h3 id="validating-request-body">Validating request body</h3>
+<p>javascript:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">const</span> { withBodyValidation } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@ekino/express-validation&apos;</span>)
 
-app.post(<span class="hljs-string">&apos;/post&apos;</span>, withBodyValidation(), (req, res) =&gt; {
+app.post(<span class="hljs-string">&apos;/post&apos;</span>, withBodyValidation(), (req, res) =&gt; {})
+</code></pre>
+<p>TypeScript:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { withBodyValidation } from <span class="hljs-string">&apos;@ekino/express-validation&apos;</span>
 
-})
+app.post(<span class="hljs-string">&apos;/post&apos;</span>, withBodyValidation(), (req, res) =&gt; {})
 </code></pre>
 <h3 id="validating-request-path">Validating request path</h3>
+<p>javascript:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">const</span> { withPathValidation } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@ekino/express-validation&apos;</span>)
 
-app.get(<span class="hljs-string">&apos;/post/:id&apos;</span>, withPathValidation(), (req, res) =&gt; {
+app.get(<span class="hljs-string">&apos;/post/:id&apos;</span>, withPathValidation(), (req, res) =&gt; {})
+</code></pre>
+<p>TypeScript:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { withPathValidation } from <span class="hljs-string">&apos;@ekino/express-validation&apos;</span>
 
-})
+app.get(<span class="hljs-string">&apos;/post/:id&apos;</span>, withPathValidation(), (req, res) =&gt; {})
 </code></pre>
 <h3 id="validating-request-query">Validating request query</h3>
+<p>javascript:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">const</span> { withQueryValidation } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@ekino/express-validation&apos;</span>)
 
-app.get(<span class="hljs-string">&apos;/posts&apos;</span>, withQueryValidation(), (req, res) =&gt; {
+app.get(<span class="hljs-string">&apos;/posts&apos;</span>, withQueryValidation(), (req, res) =&gt; {})
+</code></pre>
+<p>TypeScript:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { withQueryValidation } from <span class="hljs-string">&apos;@ekino/express-validation&apos;</span>
 
-})
+app.get(<span class="hljs-string">&apos;/posts&apos;</span>, withQueryValidation(), (req, res) =&gt; {})
 </code></pre>
 <h3 id="validating-request-headers">Validating request headers</h3>
+<p>javascript:</p>
 <pre><code class="lang-js"><span class="hljs-keyword">const</span> { withHeadersValidation } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@ekino/express-validation&apos;</span>)
 
-app.get(<span class="hljs-string">&apos;/posts&apos;</span>, withHeadersValidation(), (req, res) =&gt; {
+app.get(<span class="hljs-string">&apos;/posts&apos;</span>, withHeadersValidation(), (req, res) =&gt; {})
+</code></pre>
+<p>TypeScript:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { withHeadersValidation } from <span class="hljs-string">&apos;@ekino/express-validation&apos;</span>
 
-})
+app.get(<span class="hljs-string">&apos;/posts&apos;</span>, withHeadersValidation(), (req, res) =&gt; {})
 </code></pre>
 <h2 id="configuration">Configuration</h2>
 
@@ -357,7 +389,7 @@ app.get(<span class="hljs-string">&apos;/posts&apos;</span>, withHeadersValidati
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"@ekino/express-validation","level":"1.2.1.4","depth":3,"next":{"title":"core","level":"1.3","depth":1,"ref":"","articles":[{"title":"@ekino/api-toolkit-validation","level":"1.3.1","depth":2,"path":"packages/api-toolkit-validation/README.md","ref":"packages/api-toolkit-validation/README.md","articles":[]}]},"previous":{"title":"@ekino/express-logger","level":"1.2.1.3","depth":3,"path":"packages/express-logger/README.md","ref":"packages/express-logger/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"packages/express-validation/README.md","mtime":"2019-02-17T02:34:24.757Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-17T02:47:01.130Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"@ekino/express-validation","level":"1.2.1.4","depth":3,"next":{"title":"core","level":"1.3","depth":1,"ref":"","articles":[{"title":"@ekino/api-toolkit-validation","level":"1.3.1","depth":2,"path":"packages/api-toolkit-validation/README.md","ref":"packages/api-toolkit-validation/README.md","articles":[]}]},"previous":{"title":"@ekino/express-logger","level":"1.2.1.3","depth":3,"path":"packages/express-logger/README.md","ref":"packages/express-logger/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"packages/express-validation/README.md","mtime":"2019-02-17T03:55:09.473Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-17T03:59:34.718Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
