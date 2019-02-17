@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@ekino/api-toolkit-validation": "^0.1.1-alpha.1",
-    "lodash.defaultsDeep": "^4.6.0"
+    "lodash.defaultsdeep": "^4.6.0"
   },
   "peerDependencies": {
     "joi": "^14.3.1"

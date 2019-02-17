@@ -2,7 +2,7 @@
 
 [![Travis CI](https://img.shields.io/travis/ekino/node-api-toolkit.svg?style=flat-square)](https://travis-ci.org/ekino/node-api-toolkit)
 
-:warning: This project is in its early stage, some feature might be missing and some APIs might change in the future.
+:warning: Work in progress :warning: This project is in its early stage, some feature might be missing and some APIs might change in the future.
 
 This project provides a set of tools to ease API development, it's **not a framework** though,
 instead it promotes versatility/composability.
