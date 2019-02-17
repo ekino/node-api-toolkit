@@ -64,7 +64,7 @@ export const withValidation = (
     return (req: Request, res: Response, next: NextFunction) => {
         const _schema = getSchema(req)
 
-        const { error: validationError, data } = validate(req[requestAccessor], _schema, options)
+        const { error: validationError, data } = validate((req as any)[requestAccessor], _schema, options)
 
         if (validationError) {
             /*
@@ -78,7 +78,7 @@ export const withValidation = (
         }
 
         // replace original data with transformed one
-        req[requestAccessor] = data
+        (req as any)[requestAccessor] = data
 
         next()
     }
