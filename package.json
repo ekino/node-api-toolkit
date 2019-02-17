@@ -20,7 +20,7 @@
     "packages/*"
   ],
   "scripts": {
-    "setup": "yarn install --pure-lockfile && lerna bootstrap",
+    "setup": "yarn install && lerna bootstrap",
     "build": "lerna run tsc",
     "fmt": "prettier --color --write \"packages/*/**/*.{js,ts,yml,yaml}\" README.md \"packages/*/README.md\" tsconfig.json \"packages/*/tsconfig.json\"",
     "fmt:check": "prettier --color --list-different \"packages/*/**/*.{js,ts,yml,yaml}\" README.md \"packages/*/README.md\" tsconfig.json \"packages/*/tsconfig.json\"",
