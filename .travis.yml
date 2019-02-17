@@ -6,3 +6,5 @@ script:
   - yarn fmt:check
   - yarn lint:ts
   - yarn test
+  - yarn build
+

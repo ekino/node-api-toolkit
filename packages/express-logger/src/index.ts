@@ -1,23 +1,23 @@
 import { Request, Response, RequestHandler, NextFunction } from 'express'
 import { Logger } from '@ekino/logger'
-import * as onFinished from 'on-finished'
-import * as uuid from 'uuid'
+import onFinished from 'on-finished'
+import uuid from 'uuid'
 
 export interface RequestLogInfo {
-    method: string
-    url: string
-    originalUrl: string
-    query: { [name: string]: string | string[] }
-    responseCode: number
+    requestMethod: string
+    requestUrl: string
+    requestOriginalUrl: string
+    requestQuery: { [name: string]: string | string[] }
+    responseStatusCode: number
     responseTime: number
 }
 
 export default (
     logger: Logger,
     {
-        extractInfo = () => ({})
+        extractInfo = (req, info) => info
     }: {
-        extractInfo?: (req: Request, res: Response) => object
+        extractInfo?: (req: Request, info: RequestLogInfo, res: Response) => object
     } = {}
 ): RequestHandler => (
     // req: Request & { state: any; user?: User },
@@ -31,21 +31,25 @@ export default (
     const logRequest = () => {
         const responseTime: number = req.state.requestTime ? Date.now() - req.state.requestTime : 0
 
-        const requestInfo: RequestLogInfo & object = {
-            method: req.method,
-            url: req.url,
-            originalUrl: req.originalUrl,
-            query: req.query,
-            responseCode: res.statusCode,
-            responseTime,
-            ...extractInfo(req, res)
+        const requestInfo = extractInfo(
+            req,
+            {
+                requestMethod: req.method,
+                requestUrl: req.url,
+                requestOriginalUrl: req.originalUrl,
+                requestQuery: req.query,
+                responseStatusCode: res.statusCode,
+                responseTime
+            },
+            res
+        )
+
+        const loggerArgs = [`HTTP ${req.method} ${req.originalUrl || req.url}`, requestInfo]
+        if (req.state.context && req.state.context.id) {
+            loggerArgs.unshift(req.state.context.id)
         }
 
-        logger.info(
-            req.state.context ? req.state.context.id : uuid.v4(),
-            `HTTP ${req.method} ${req.originalUrl || req.url}`,
-            requestInfo
-        )
+        ;(logger as any).info(...loggerArgs)
     }
 
     onFinished(res, logRequest)
