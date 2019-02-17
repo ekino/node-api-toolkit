@@ -7,5 +7,5 @@
 ## Installation
 
 ```sh
-yarn add @ekino/express-logger
+yarn add @ekino/logger @ekino/express-logger
 ```
