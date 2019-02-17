@@ -1,10 +1,10 @@
 import * as Joi from 'joi'
 import { Request } from 'express'
-import { withHeadersValidation } from '../src/index'
+import { validateRequestHeaders } from '../src/index'
 import mockResponse from './mock_express_response'
 
 test('it should reject if headers are invalid', () => {
-    const validate = withHeadersValidation(
+    const validate = validateRequestHeaders(
         Joi.object().keys({
             'X-Header-Custom': Joi.string().required()
         })
@@ -34,7 +34,7 @@ test('it should reject if headers are invalid', () => {
 })
 
 test('it should replace request headers with validated data', () => {
-    const validate = withHeadersValidation(
+    const validate = validateRequestHeaders(
         Joi.object().keys({
             id: Joi.number().required()
         })

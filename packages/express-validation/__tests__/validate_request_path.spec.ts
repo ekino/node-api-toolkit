@@ -1,10 +1,10 @@
 import * as Joi from 'joi'
 import { Request } from 'express'
-import { withPathValidation } from '../src/index'
+import { validateRequestPath } from '../src/index'
 import mockResponse from './mock_express_response'
 
 test('it should reject if path parameters are invalid', () => {
-    const validate = withPathValidation(
+    const validate = validateRequestPath(
         Joi.object().keys({
             id: Joi.number().required()
         })
@@ -34,7 +34,7 @@ test('it should reject if path parameters are invalid', () => {
 })
 
 test('it should replace request path params with validated data', () => {
-    const validate = withPathValidation(
+    const validate = validateRequestPath(
         Joi.object().keys({
             id: Joi.number().required()
         })

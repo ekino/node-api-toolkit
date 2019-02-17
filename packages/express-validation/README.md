@@ -4,6 +4,12 @@
 
 This package helps validating/normalizing incoming express API requests
 using [Joi](https://github.com/hapijs/joi) schemas in the form of express middlewares.
+When you add one of the provided middelwares to your app, it will try to validate
+the given source (body, path, query, headers) against a Joi schema,
+replace the source data with the validated data if validation passes
+or send back the validation errors along with a `400` HTTP status code otherwise.
+
+> Please be aware that the provided middlewares mutate the request's source data.
 
 It can be used for several purposes, for example:
 
@@ -26,8 +32,6 @@ It supports several _sources_:
 
 You can easily adapt it to your needs using the [configuration object](#configuration).
 
-> Please be aware that the provided middlewares mutate the request data.
-
 ## Installation
 
 You also have to install [Joi](https://github.com/hapijs/joi) as it's a peer dependency
@@ -43,22 +47,22 @@ yarn add joi @ekino/express-validation
 
 ```typescript
 import * as Joi from 'joi'
-import { withBodyValidation } from '@ekino/express-validation'
+import { validateRequestBody } from '@ekino/express-validation'
 
-app.post('/post', withBodyValidation(), (req, res) => {})
+app.post('/post', validateRequestBody(schema), (req, res) => {})
 ```
 
 ### Validating request path
 
 ```typescript
 import * as Joi from 'joi'
-import { withPathValidation } from '@ekino/express-validation'
+import { validateRequestPath } from '@ekino/express-validation'
 
 const schema = Joi.object().keys({
     id: Joi.number().required()
 })
 
-app.get('/post/:id', withPathValidation(schema), (req, res) => {
+app.get('/post/:id', validateRequestPath(schema), (req, res) => {
     // now you're sure that `id` is a number,
     // it also have been casted to a number
     const { id } = req.params
@@ -69,13 +73,13 @@ app.get('/post/:id', withPathValidation(schema), (req, res) => {
 
 ```typescript
 import * as Joi from 'joi'
-import { withQueryValidation } from '@ekino/express-validation'
+import { validateRequestQuery } from '@ekino/express-validation'
 
 const schema = Joi.object().keys({
     sort: Joi.string().required()
 })
 
-app.get('/posts', withQueryValidation(schema), (req, res) => {
+app.get('/posts', validateRequestQuery(schema), (req, res) => {
     // assuming you made a request such as `GET /posts?sort=title`
     // now you're sure that `sort` exists
     const { sort } = req.query
@@ -86,9 +90,9 @@ app.get('/posts', withQueryValidation(schema), (req, res) => {
 
 ```typescript
 import * as Joi from 'joi'
-import { withHeadersValidation } from '@ekino/express-validation'
+import { validateRequestHeaders } from '@ekino/express-validation'
 
-app.get('/posts', withHeadersValidation(), (req, res) => {})
+app.get('/posts', validateRequestHeaders(), (req, res) => {})
 ```
 
 ## Configuration
@@ -98,28 +102,46 @@ this module can act as a simple bridge between Joi & express.
 
 The available options are:
 
--   errorStatusCode
 -   joiOptions
--   errorOverride
 -   logger
+-   errorStatusCode
+-   errorBody
+-   errorHandler
 
 Let's now see which use cases can be covered using those options.
 
-### Customizing errorStatusCode
+### Customizing Joi options
+
+### Adding logging support
+
+### Customizing error response status code
 
 By default, all the middlewares issue a `400` HTTP status code,
-this option allows you to use another one.
+the `errorStatusCode` option allows you to use another one.
 
 ```typescript
-app.get('/post/:id', withPathValidation(schema, { errorStatusCode: 404 }), (req, res) => {
+app.get('/post/:id', validateRequestPath(schema, { errorStatusCode: 404 }), (req, res) => {
     // ...
 })
 ```
 
 Now, if the provided `:id` doesn't conform to `schema`, the client will receive a `404` HTTP status code.
 
-### Customizing Joi options
+You can also use a function to determine response status code, which can be useful
+if you have to add some extra logic to define it.
 
-### Customizing the response error
+```typescript
+app.get(
+    '/post/:id',
+    validateRequestPath(schema, {
+        errorStatusCode: (req: Request, error: ValidationError) => 401
+    }),
+    (req, res) => {
+        /* ... */
+    }
+)
+```
 
-### Adding logging support
+### Customizing error response body
+
+### Using your own error handler

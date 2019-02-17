@@ -10,6 +10,15 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "lodash.defaultsdeep": "^4.6.0"
+  },
+  "peerDependencies": {
+    "joi": "^14.3.1"
+  },
+  "devDependencies": {
+    "joi": "^14.3.1"
+  },
   "scripts": {
     "tsc": "tsc"
   }

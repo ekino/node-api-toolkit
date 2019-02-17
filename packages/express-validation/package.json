@@ -14,7 +14,6 @@
     "@ekino/api-toolkit-validation": "^0.1.1-alpha.0"
   },
   "peerDependencies": {
-    "express": "^4.16.4",
     "joi": "^14.3.1"
   },
   "devDependencies": {
