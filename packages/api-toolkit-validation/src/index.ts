@@ -1,5 +1,5 @@
 import { validate as joiValidate, ValidationOptions, Schema } from 'joi'
-import { defaultsDeep } from 'lodash'
+import defaultsDeep from 'lodash.defaultsdeep'
 // const { INTERNAL_ERROR, VALIDATION_ERROR } = require('../constants')
 // const { typedError } = require('./errors')
 

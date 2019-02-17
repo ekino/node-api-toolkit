@@ -1,3 +1,5 @@
+import * as Joi from 'joi'
+
 test('it should reject if path parameters are invalid', () => {
     /*
     const validate = validatePath(
