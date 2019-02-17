@@ -1,0 +1,396 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>@ekino/express-validation · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="../express-logger/" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    middlewares
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" >
+            
+                <span>
+            
+                    
+                    express
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1.1" data-path="../express-collection/">
+            
+                <a href="../express-collection/">
+            
+                    
+                    @ekino/express-collection
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.1.2" data-path="../express-context/">
+            
+                <a href="../express-context/">
+            
+                    
+                    @ekino/express-context
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.1.3" data-path="../express-logger/">
+            
+                <a href="../express-logger/">
+            
+                    
+                    @ekino/express-logger
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2.1.4" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    @ekino/express-validation
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    core
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../api-toolkit-validation/">
+            
+                <a href="../api-toolkit-validation/">
+            
+                    
+                    @ekino/api-toolkit-validation
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >@ekino/express-validation</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="ekinoexpress-validation">@ekino/express-validation</h1>
+<p>This package helps validating/normalizing incoming express API requests
+using Joi schemas in the form of express middlewares.</p>
+<p>It&apos;s written in TypeScript, so there&apos;s no need to install external types
+if you&apos;re working on a TypeScript based project.
+However TypeScript is not required as the published package contains
+a compiled version.</p>
+<p>It supports several <em>sources</em>:</p>
+<ul>
+<li><a href="#validating-request-body">body</a></li>
+<li><a href="#validating-request-path">path</a></li>
+<li><a href="#validating-request-query">query</a></li>
+<li><a href="#validating-request-headers">headers</a></li>
+</ul>
+<p>You can easily adapt it to your needs using the <a href="#configuration">configuration object</a>.</p>
+<blockquote>
+<p>Please be aware that the provided middlewares mutate the request data.</p>
+</blockquote>
+<h2 id="installation">Installation</h2>
+<pre><code class="lang-sh">yarn add @ekino/express-validation
+</code></pre>
+<h2 id="usage">Usage</h2>
+<h3 id="validating-request-body">Validating request body</h3>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> { withBodyValidation } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@ekino/express-validation&apos;</span>)
+
+app.post(<span class="hljs-string">&apos;/post&apos;</span>, withBodyValidation(), (req, res) =&gt; {
+
+})
+</code></pre>
+<h3 id="validating-request-path">Validating request path</h3>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> { withPathValidation } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@ekino/express-validation&apos;</span>)
+
+app.get(<span class="hljs-string">&apos;/post/:id&apos;</span>, withPathValidation(), (req, res) =&gt; {
+
+})
+</code></pre>
+<h3 id="validating-request-query">Validating request query</h3>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> { withQueryValidation } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@ekino/express-validation&apos;</span>)
+
+app.get(<span class="hljs-string">&apos;/posts&apos;</span>, withQueryValidation(), (req, res) =&gt; {
+
+})
+</code></pre>
+<h3 id="validating-request-headers">Validating request headers</h3>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> { withHeadersValidation } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&apos;@ekino/express-validation&apos;</span>)
+
+app.get(<span class="hljs-string">&apos;/posts&apos;</span>, withHeadersValidation(), (req, res) =&gt; {
+
+})
+</code></pre>
+<h2 id="configuration">Configuration</h2>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../express-logger/" class="navigation navigation-prev navigation-unique" aria-label="Previous page: @ekino/express-logger">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"@ekino/express-validation","level":"1.2.1.4","depth":3,"next":{"title":"core","level":"1.3","depth":1,"ref":"","articles":[{"title":"@ekino/api-toolkit-validation","level":"1.3.1","depth":2,"path":"packages/api-toolkit-validation/README.md","ref":"packages/api-toolkit-validation/README.md","articles":[]}]},"previous":{"title":"@ekino/express-logger","level":"1.2.1.3","depth":3,"path":"packages/express-logger/README.md","ref":"packages/express-logger/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"packages/express-validation/README.md","mtime":"2019-02-17T02:34:24.757Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-17T02:47:01.130Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

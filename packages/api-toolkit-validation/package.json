@@ -1,0 +1,24 @@
+{
+  "name": "@ekino/api-toolkit-validation",
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "peerDependencies": {
+    "joi": "^14.3.1"
+  },
+  "dependencies": {
+    "lodash.defaultsdeep": "^4.6.0"
+  },
+  "devDependencies": {
+    "@types/joi": "^14.3.1",
+    "@types/lodash.defaultsdeep": "^4.6.5",
+    "joi": "^14.3.1"
+  },
+  "scripts": {
+    "tsc": "tsc"
+  }
+}
