@@ -12,10 +12,10 @@ a compiled version.
 
 It supports several _sources_:
 
-* [request body](#validating-request-body)
-* [request path](#validating-request-path)
-* [request query](#validating-request-query)
-* [request headers](#validating-request-headers)
+-   [request body](#validating-request-body)
+-   [request path](#validating-request-path)
+-   [request query](#validating-request-query)
+-   [request headers](#validating-request-headers)
 
 You can easily adapt it to your needs using the [configuration object](#configuration).
 
@@ -39,9 +39,7 @@ javascript:
 ```js
 const { withBodyValidation } = require('@ekino/express-validation')
 
-app.post('/post', withBodyValidation(), (req, res) => {
-
-})
+app.post('/post', withBodyValidation(), (req, res) => {})
 ```
 
 TypeScript:
@@ -49,9 +47,7 @@ TypeScript:
 ```typescript
 import { withBodyValidation } from '@ekino/express-validation'
 
-app.post('/post', withBodyValidation(), (req, res) => {
-
-})
+app.post('/post', withBodyValidation(), (req, res) => {})
 ```
 
 ### Validating request path
@@ -61,9 +57,7 @@ javascript:
 ```js
 const { withPathValidation } = require('@ekino/express-validation')
 
-app.get('/post/:id', withPathValidation(), (req, res) => {
-
-})
+app.get('/post/:id', withPathValidation(), (req, res) => {})
 ```
 
 TypeScript:
@@ -71,9 +65,7 @@ TypeScript:
 ```typescript
 import { withPathValidation } from '@ekino/express-validation'
 
-app.get('/post/:id', withPathValidation(), (req, res) => {
-
-})
+app.get('/post/:id', withPathValidation(), (req, res) => {})
 ```
 
 ### Validating request query
@@ -83,9 +75,7 @@ javascript:
 ```js
 const { withQueryValidation } = require('@ekino/express-validation')
 
-app.get('/posts', withQueryValidation(), (req, res) => {
-
-})
+app.get('/posts', withQueryValidation(), (req, res) => {})
 ```
 
 TypeScript:
@@ -93,9 +83,7 @@ TypeScript:
 ```typescript
 import { withQueryValidation } from '@ekino/express-validation'
 
-app.get('/posts', withQueryValidation(), (req, res) => {
-
-})
+app.get('/posts', withQueryValidation(), (req, res) => {})
 ```
 
 ### Validating request headers
@@ -105,9 +93,7 @@ javascript:
 ```js
 const { withHeadersValidation } = require('@ekino/express-validation')
 
-app.get('/posts', withHeadersValidation(), (req, res) => {
-
-})
+app.get('/posts', withHeadersValidation(), (req, res) => {})
 ```
 
 TypeScript:
@@ -115,9 +101,7 @@ TypeScript:
 ```typescript
 import { withHeadersValidation } from '@ekino/express-validation'
 
-app.get('/posts', withHeadersValidation(), (req, res) => {
-
-})
+app.get('/posts', withHeadersValidation(), (req, res) => {})
 ```
 
 ## Configuration

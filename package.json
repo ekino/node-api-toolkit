@@ -10,8 +10,9 @@
     "lerna": "^3.13.0",
     "prettier": "^1.16.4",
     "ts-jest": "^23.10.5",
-    "ts-lint": "^4.5.1",
     "ts-node": "^8.0.2",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.3.3"
   },
   "workspaces": [
@@ -21,6 +22,7 @@
     "setup": "yarn install --pure-lockfile && lerna bootstrap",
     "build": "lerna run tsc",
     "fmt": "prettier --color --write \"packages/*/**/*.{js,ts,yml,yaml}\" README.md \"packages/*/README.md\" tsconfig.json \"packages/*/tsconfig.json\"",
+    "lint:ts": "tslint -p . -c tslint.json \"packages/**/*.ts\"",
     "test": "lerna run test",
     "packages:pub": "lerna run tsc && lerna publish",
     "doc:serve": "gitbook serve",

@@ -1,4 +1,3 @@
-
 test('it should reject if query parameters are invalid', () => {
     /*
     const validate = validateQuery(
