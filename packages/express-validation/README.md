@@ -1,5 +1,7 @@
 # @ekino/express-validation
 
+[![version](https://img.shields.io/npm/v/@ekino/express-validation.svg?style=flat-square)](https://www.npmjs.com/package/@ekino/express-validation)
+
 This package helps validating/normalizing incoming express API requests
 using [Joi](https://github.com/hapijs/joi) schemas in the form of express middlewares.
 
