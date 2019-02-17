@@ -1,6 +1,6 @@
 {
   "name": "@ekino/express-collection",
-  "version": "0.1.1-alpha.1",
+  "version": "0.2.0-alpha.0",
   "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -11,7 +11,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@ekino/api-toolkit-validation": "^0.1.1-alpha.1",
+    "@ekino/api-toolkit-validation": "^0.2.0-alpha.0",
     "lodash.defaultsdeep": "^4.6.0"
   },
   "peerDependencies": {
