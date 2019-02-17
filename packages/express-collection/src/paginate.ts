@@ -1,40 +1,32 @@
+import defaultsDeep from 'lodash.defaultsDeep'
+import * as Joi from 'joi'
+import { Request, Response, NextFunction } from 'express'
+import { validate } from '@ekino/api-toolkit-validation'
+// const log = require('@ekino/logger')('api:paginate')
+// const dto = require('../../dto')
+
 export interface PaginationOptions {
-    page: {
-        key: string
-        startAtZero: boolean
-    }
-    perPage: {
-        key: string
-        max: number
-    }
+    pageKey: string
+    perPageKey: string
+    perPageMax: number
 }
 
 export interface PaginationState {
     page: number
-    perPage: number
     offset: number
+    perPage: number
 }
 
-// export const withPagination = () => {}
-
-/*
-'use strict'
-
-const defaultsDeep = require('lodash.defaultsdeep')
-const Joi = require('joi')
-const log = require('@ekino/logger')('api:paginate')
-const validator = require('../../core/validator')
-const dto = require('../../dto')
-
-const defaultPaginationOptions = {
-    page: { key: 'page' },
-    perPage: { key: 'perPage', max: 10000 },
+const defaultPaginationOptions: PaginationOptions = {
+    pageKey: 'page',
+    perPageKey: 'perPage',
+    perPageMax: 10000
 }
 
-const defaultState = () => ({
+const defaultState = (): PaginationState => ({
     page: 1,
     offset: 0,
-    limit: 10,
+    perPage: 10
 })
 
 /**
@@ -45,25 +37,25 @@ const defaultState = () => ({
  * will translate to:
  *
  * { pagination: {
- *     page:   1,
- *     offset: 0,
- *     limit:  10,
+ *     perPage: 10,
+ *     page:    1,
+ *     offset:  0,
  * } }
  *
  * @param {Object} [partialOptions = {}] - Middleware options, see defaultPaginationOptions
  *
  * @returns {Function} The middleware
- *
-module.exports = (partialOptions = {}) => {
-    const options = defaultsDeep(partialOptions, defaultPaginationOptions)
+ */
+export const paginate = (partialOptions: Partial<PaginationOptions> = {}) => {
+    const options: PaginationOptions = defaultsDeep(partialOptions, defaultPaginationOptions)
 
-    return (req, res, next) => {
+    return (req: Request & { state?: any }, res: Response, next: NextFunction) => {
         req.state = req.state || {}
         req.state.pagination = req.state.pagination || defaultState()
 
         const pagination = {
-            page: req.query[options.page.key],
-            perPage: req.query[options.perPage.key],
+            page: req.query[options.pageKey],
+            perPage: req.query[options.perPageKey]
         }
 
         const paginationSchema = Joi.object().keys({
@@ -73,11 +65,12 @@ module.exports = (partialOptions = {}) => {
             perPage: Joi.number()
                 .integer()
                 .min(1)
-                .max(options.perPage.max),
+                .max(options.perPageMax)
         })
 
-        const { error: validationError, data } = validator.validate(pagination, paginationSchema)
+        const { error: validationError, data } = validate(pagination, paginationSchema)
         if (validationError) {
+            /*
             const { contextId } = req.state
             log.debug(contextId, 'An error occurred during pagination validation', {
                 error: validationError.data,
@@ -88,20 +81,21 @@ module.exports = (partialOptions = {}) => {
             )
 
             return res.status(400).json(error)
+            */
+            return res.status(400).json({ failed: true })
         }
 
         if (data.perPage) {
-            req.state.pagination.limit = data.perPage
+            req.state.pagination.perPage = data.perPage
         }
 
         if (data.page) {
             req.state.pagination.page = data.page
             if (data.page > 1) {
-                req.state.pagination.offset = (data.page - 1) * req.state.pagination.limit
+                req.state.pagination.offset = (data.page - 1) * req.state.pagination.perPage
             }
         }
 
         next()
     }
 }
-*/
