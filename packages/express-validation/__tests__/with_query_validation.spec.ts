@@ -1,18 +1,24 @@
+import * as Joi from 'joi'
+import { Request } from 'express'
+import { withQueryValidation } from '../src/index'
+import mockResponse from './mock_express_response'
+
 test('it should reject if query parameters are invalid', () => {
-    /*
-    const validate = validateQuery(
+    const validate = withQueryValidation(
         Joi.object().keys({
-            page: Joi.number().required(),
+            page: Joi.number().required()
         })
     )
 
-    const req = { state: { contextId: 'context-id' }, query: {} }
+    const req = { query: {} } as Request
     const res = mockResponse()
     const next = jest.fn()
 
     validate(req, res, next)
 
     expect(res.status).toHaveBeenCalledWith(400)
+    expect(next).not.toHaveBeenCalled()
+    /*
     expect(res.json).toHaveBeenCalledWith({
         type: 'validation_error',
         message: 'query validation failed',
@@ -24,19 +30,17 @@ test('it should reject if query parameters are invalid', () => {
             },
         ],
     })
-    expect(next).not.toHaveBeenCalled()
     */
 })
 
 test('it should replace request query with validated data', () => {
-    /*
-    const validate = validateQuery(
+    const validate = withQueryValidation(
         Joi.object().keys({
-            id: Joi.number().required(),
+            id: Joi.number().required()
         })
     )
 
-    const req = { state: { contextId: 'context-id' }, query: { id: '12' } }
+    const req = { query: { id: '12' } } as Request
     const res = mockResponse()
     const next = jest.fn()
 
@@ -46,5 +50,4 @@ test('it should replace request query with validated data', () => {
     expect(res.status).not.toHaveBeenCalled()
     expect(res.json).not.toHaveBeenCalled()
     expect(next).toHaveBeenCalled()
-    */
 })

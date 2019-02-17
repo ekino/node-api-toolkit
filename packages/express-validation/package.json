@@ -1,14 +1,17 @@
 {
   "name": "@ekino/express-validation",
-  "version": "0.1.0",
+  "version": "0.1.1-alpha.0",
   "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
     "lib"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
-    "@ekino/api-toolkit-validation": "0.1.0"
+    "@ekino/api-toolkit-validation": "^0.1.1-alpha.0"
   },
   "peerDependencies": {
     "express": "^4.16.4",
@@ -16,11 +19,12 @@
   },
   "devDependencies": {
     "@types/express": "^4.16.1",
+    "@types/jest": "24.0.5",
     "@types/joi": "^14.3.1",
     "joi": "^14.3.1"
   },
   "scripts": {
     "tsc": "tsc",
-    "test": "jest"
+    "test": "jest --verbose"
   }
 }

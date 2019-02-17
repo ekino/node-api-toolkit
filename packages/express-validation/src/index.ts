@@ -10,7 +10,9 @@ export interface LoggerInterface {
     error: (...args: any[]) => void
 }
 
+// tslint:disable-next-line
 const noop = () => {}
+
 const noopLogger: LoggerInterface = {
     trace: noop,
     debug: noop,
@@ -62,9 +64,13 @@ export const withValidation = (
     const getSchema = typeof schema === 'function' ? schema : (req: Request) => schema
 
     return (req: Request, res: Response, next: NextFunction) => {
-        const _schema = getSchema(req)
+        const resolvedSchema = getSchema(req)
 
-        const { error: validationError, data } = validate(req[requestAccessor], _schema, options)
+        const { error: validationError, data } = validate(
+            (req as any)[requestAccessor],
+            resolvedSchema,
+            options
+        )
 
         if (validationError) {
             /*
@@ -72,13 +78,13 @@ export const withValidation = (
                 error: validationError//.data,
             })
             */
-            const error = errorOverride ? errorOverride : validationError //.data // dto.error.validationError(`${source} validation failed`, validationError.data)
+            const error = errorOverride ? errorOverride : validationError // .data // dto.error.validationError(`${source} validation failed`, validationError.data)
 
             return res.status(errorStatusCode).json(error)
         }
 
         // replace original data with transformed one
-        req[requestAccessor] = data
+        ;(req as any)[requestAccessor] = data
 
         next()
     }
