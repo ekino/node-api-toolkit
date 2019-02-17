@@ -1,1 +1,1 @@
-export default '@todo'
+export * from './pagination'

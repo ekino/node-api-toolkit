@@ -1,10 +1,10 @@
 import * as Joi from 'joi'
 import { Request } from 'express'
-import { withQueryValidation } from '../src/index'
+import { validateRequestQuery } from '../src/index'
 import mockResponse from './mock_express_response'
 
 test('it should reject if query parameters are invalid', () => {
-    const validate = withQueryValidation(
+    const validate = validateRequestQuery(
         Joi.object().keys({
             page: Joi.number().required()
         })
@@ -34,7 +34,7 @@ test('it should reject if query parameters are invalid', () => {
 })
 
 test('it should replace request query with validated data', () => {
-    const validate = withQueryValidation(
+    const validate = validateRequestQuery(
         Joi.object().keys({
             id: Joi.number().required()
         })

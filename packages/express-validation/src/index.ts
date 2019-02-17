@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { Schema, ValidationOptions } from 'joi'
+import { default as Joi, ValidationOptions, ObjectSchema, ValidationError } from 'joi'
 import { validate } from '@ekino/api-toolkit-validation'
 
 export interface LoggerInterface {
@@ -30,14 +30,29 @@ const sources = {
 
 export type RequestValidationSource = 'body' | 'path' | 'query' | 'headers'
 
-export type RequestValidationOptions = {
-    errorStatusCode?: number
-    options?: ValidationOptions
-    errorOverride?: any
-    logger?: LoggerInterface
-}
+export type DynamicSchema = (req: Request) => ObjectSchema
 
-export type DynamicSchema = (req: Request) => Schema
+export type ValidationErrorStatusResolver = (
+    req: Request,
+    res: Response,
+    error: ValidationError
+) => number
+
+export type ValidationErrorContentResolver = (
+    req: Request,
+    res: Response,
+    error: ValidationError
+) => object
+
+export type ValidationErrorHandler = (req: Request, res: Response, error: ValidationError) => void
+
+export type RequestValidationOptions = {
+    joiOptions?: ValidationOptions
+    logger?: LoggerInterface
+    errorStatusCode?: number | ValidationErrorStatusResolver
+    errorBody?: object | ValidationErrorContentResolver
+    errorHandler?: ValidationErrorHandler
+}
 
 /**
  * Check request against a given Joi schema, update request with transformed / casted values
@@ -50,14 +65,15 @@ export type DynamicSchema = (req: Request) => Schema
  *   }
  * otherwise, all extra headers will be removed from the request.
  */
-export const withValidation = (
+export const validateRequest = (
     source: RequestValidationSource,
-    schema: Schema | DynamicSchema,
+    schema: ObjectSchema | DynamicSchema,
     {
+        joiOptions = {},
+        logger = noopLogger,
         errorStatusCode = 400,
-        options = {},
-        errorOverride,
-        logger = noopLogger
+        errorBody,
+        errorHandler
     }: RequestValidationOptions = {}
 ) => {
     const requestAccessor = sources[source]
@@ -69,18 +85,43 @@ export const withValidation = (
         const { error: validationError, data } = validate(
             (req as any)[requestAccessor],
             resolvedSchema,
-            options
+            joiOptions
         )
 
         if (validationError) {
+            /*
+            if (!(validationError instanceof ValidationError)) {
+                throw validationError
+                //return res.status(500).send(errorDto.internalError(endpoint))
+            }
+            */
+
             /*
             logger.debug(req.state.context.id, `request ${source} validation failed`, {
                 error: validationError//.data,
             })
             */
-            const error = errorOverride ? errorOverride : validationError // .data // dto.error.validationError(`${source} validation failed`, validationError.data)
 
-            return res.status(errorStatusCode).json(error)
+            if (errorHandler !== undefined) {
+                return errorHandler(req, res, validationError as ValidationError)
+            }
+
+            let statusCode: number
+            if (typeof errorStatusCode === 'function') {
+                statusCode = errorStatusCode(req, res, validationError as ValidationError)
+            } else {
+                statusCode = errorStatusCode
+            }
+
+            let body: object
+            // .data // dto.error.validationError(`${source} validation failed`, validationError.data)
+            if (typeof errorBody === 'function') {
+                body = errorBody(req, res, validationError as ValidationError)
+            } else {
+                body = errorBody
+            }
+
+            return res.status(statusCode).json(body)
         }
 
         // replace original data with transformed one
@@ -95,24 +136,24 @@ export const withValidation = (
  * update request with transformed / casted values
  * or respond with error if validation fails.
  */
-export const withBodyValidation = (schema: any, options?: RequestValidationOptions) =>
-    withValidation('body', schema, options)
+export const validateRequestBody = (schema: any, options?: RequestValidationOptions) =>
+    validateRequest('body', schema, options)
 
 /**
  * Check request path against a given Joi schema,
  * update request with transformed / casted values
  * or respond with error if validation fails.
  */
-export const withPathValidation = (schema: any, options?: RequestValidationOptions) =>
-    withValidation('path', schema, options)
+export const validateRequestPath = (schema: any, options?: RequestValidationOptions) =>
+    validateRequest('path', schema, options)
 
 /**
  * Check request query against a given Joi schema,
  * update request with transformed / casted values
  * or respond with error if validation fails.
  */
-export const withQueryValidation = (schema: any, options?: RequestValidationOptions) =>
-    withValidation('query', schema, options)
+export const validateRequestQuery = (schema: any, options?: RequestValidationOptions) =>
+    validateRequest('query', schema, options)
 
 /**
  * Check request headers against a given Joi schema,
@@ -122,19 +163,23 @@ export const withQueryValidation = (schema: any, options?: RequestValidationOpti
  * Default `options` are different from other validation,
  * otherwise, all extra headers will be removed from the request.
  */
-export const withHeadersValidation = (
+export const validateRequestHeaders = (
     schema: any,
     {
-        errorStatusCode,
-        options = {
+        joiOptions = {
             stripUnknown: false,
             allowUnknown: true
         },
-        errorOverride
+        logger = noopLogger,
+        errorStatusCode = 400,
+        errorBody,
+        errorHandler
     }: RequestValidationOptions = {}
 ) =>
-    withValidation('headers', schema, {
+    validateRequest('headers', schema, {
+        joiOptions,
+        logger,
         errorStatusCode,
-        options,
-        errorOverride
+        errorBody,
+        errorHandler
     })

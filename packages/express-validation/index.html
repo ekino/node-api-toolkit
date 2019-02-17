@@ -264,7 +264,14 @@
                                 <h1 id="ekinoexpress-validation">@ekino/express-validation</h1>
 <p><a href="https://www.npmjs.com/package/@ekino/express-validation" target="_blank"><img src="https://img.shields.io/npm/v/@ekino/express-validation.svg?style=flat-square" alt="version"></a></p>
 <p>This package helps validating/normalizing incoming express API requests
-using <a href="https://github.com/hapijs/joi" target="_blank">Joi</a> schemas in the form of express middlewares.</p>
+using <a href="https://github.com/hapijs/joi" target="_blank">Joi</a> schemas in the form of express middlewares.
+When you add one of the provided middelwares to your app, it will try to validate
+the given source (body, path, query, headers) against a Joi schema,
+replace the source data with the validated data if validation passes
+or send back the validation errors along with a <code>400</code> HTTP status code otherwise.</p>
+<blockquote>
+<p>Please be aware that the provided middlewares mutate the request&apos;s source data.</p>
+</blockquote>
 <p>It can be used for several purposes, for example:</p>
 <ul>
 <li>validating payload when attempting to write to your API</li>
@@ -284,9 +291,6 @@ a compiled version.</p>
 <li><a href="#validating-request-headers">request headers</a></li>
 </ul>
 <p>You can easily adapt it to your needs using the <a href="#configuration">configuration object</a>.</p>
-<blockquote>
-<p>Please be aware that the provided middlewares mutate the request data.</p>
-</blockquote>
 <h2 id="installation">Installation</h2>
 <p>You also have to install <a href="https://github.com/hapijs/joi" target="_blank">Joi</a> as it&apos;s a peer dependency
 of this package.</p>
@@ -295,19 +299,19 @@ of this package.</p>
 <h2 id="usage">Usage</h2>
 <h3 id="validating-request-body">Validating request body</h3>
 <pre><code class="lang-typescript"><span class="hljs-keyword">import</span> * as Joi from <span class="hljs-string">&apos;joi&apos;</span>
-<span class="hljs-keyword">import</span> { withBodyValidation } from <span class="hljs-string">&apos;@ekino/express-validation&apos;</span>
+<span class="hljs-keyword">import</span> { validateRequestBody } from <span class="hljs-string">&apos;@ekino/express-validation&apos;</span>
 
-app.post(<span class="hljs-string">&apos;/post&apos;</span>, withBodyValidation(), (req, res) =&gt; {})
+app.post(<span class="hljs-string">&apos;/post&apos;</span>, validateRequestBody(schema), (req, res) =&gt; {})
 </code></pre>
 <h3 id="validating-request-path">Validating request path</h3>
 <pre><code class="lang-typescript"><span class="hljs-keyword">import</span> * as Joi from <span class="hljs-string">&apos;joi&apos;</span>
-<span class="hljs-keyword">import</span> { withPathValidation } from <span class="hljs-string">&apos;@ekino/express-validation&apos;</span>
+<span class="hljs-keyword">import</span> { validateRequestPath } from <span class="hljs-string">&apos;@ekino/express-validation&apos;</span>
 
 <span class="hljs-keyword">const</span> schema = Joi.object().keys({
     id: Joi.number().required()
 })
 
-app.get(<span class="hljs-string">&apos;/post/:id&apos;</span>, withPathValidation(schema), (req, res) =&gt; {
+app.get(<span class="hljs-string">&apos;/post/:id&apos;</span>, validateRequestPath(schema), (req, res) =&gt; {
     <span class="hljs-comment">// now you&apos;re sure that `id` is a number,</span>
     <span class="hljs-comment">// it also have been casted to a number</span>
     <span class="hljs-keyword">const</span> { id } = req.params
@@ -315,13 +319,13 @@ app.get(<span class="hljs-string">&apos;/post/:id&apos;</span>, withPathValidati
 </code></pre>
 <h3 id="validating-request-query">Validating request query</h3>
 <pre><code class="lang-typescript"><span class="hljs-keyword">import</span> * as Joi from <span class="hljs-string">&apos;joi&apos;</span>
-<span class="hljs-keyword">import</span> { withQueryValidation } from <span class="hljs-string">&apos;@ekino/express-validation&apos;</span>
+<span class="hljs-keyword">import</span> { validateRequestQuery } from <span class="hljs-string">&apos;@ekino/express-validation&apos;</span>
 
 <span class="hljs-keyword">const</span> schema = Joi.object().keys({
     sort: Joi.string().required()
 })
 
-app.get(<span class="hljs-string">&apos;/posts&apos;</span>, withQueryValidation(schema), (req, res) =&gt; {
+app.get(<span class="hljs-string">&apos;/posts&apos;</span>, validateRequestQuery(schema), (req, res) =&gt; {
     <span class="hljs-comment">// assuming you made a request such as `GET /posts?sort=title`</span>
     <span class="hljs-comment">// now you&apos;re sure that `sort` exists</span>
     <span class="hljs-keyword">const</span> { sort } = req.query
@@ -329,32 +333,46 @@ app.get(<span class="hljs-string">&apos;/posts&apos;</span>, withQueryValidation
 </code></pre>
 <h3 id="validating-request-headers">Validating request headers</h3>
 <pre><code class="lang-typescript"><span class="hljs-keyword">import</span> * as Joi from <span class="hljs-string">&apos;joi&apos;</span>
-<span class="hljs-keyword">import</span> { withHeadersValidation } from <span class="hljs-string">&apos;@ekino/express-validation&apos;</span>
+<span class="hljs-keyword">import</span> { validateRequestHeaders } from <span class="hljs-string">&apos;@ekino/express-validation&apos;</span>
 
-app.get(<span class="hljs-string">&apos;/posts&apos;</span>, withHeadersValidation(), (req, res) =&gt; {})
+app.get(<span class="hljs-string">&apos;/posts&apos;</span>, validateRequestHeaders(), (req, res) =&gt; {})
 </code></pre>
 <h2 id="configuration">Configuration</h2>
 <p>You can completely customize the behaviour of the middlewares,
 this module can act as a simple bridge between Joi &amp; express.</p>
 <p>The available options are:</p>
 <ul>
-<li>errorStatusCode</li>
 <li>joiOptions</li>
-<li>errorOverride</li>
 <li>logger</li>
+<li>errorStatusCode</li>
+<li>errorBody</li>
+<li>errorHandler</li>
 </ul>
 <p>Let&apos;s now see which use cases can be covered using those options.</p>
-<h3 id="customizing-errorstatuscode">Customizing errorStatusCode</h3>
+<h3 id="customizing-joi-options">Customizing Joi options</h3>
+<h3 id="adding-logging-support">Adding logging support</h3>
+<h3 id="customizing-error-response-status-code">Customizing error response status code</h3>
 <p>By default, all the middlewares issue a <code>400</code> HTTP status code,
-this option allows you to use another one.</p>
-<pre><code class="lang-typescript">app.get(<span class="hljs-string">&apos;/post/:id&apos;</span>, withPathValidation(schema, { errorStatusCode: <span class="hljs-number">404</span> }), (req, res) =&gt; {
+the <code>errorStatusCode</code> option allows you to use another one.</p>
+<pre><code class="lang-typescript">app.get(<span class="hljs-string">&apos;/post/:id&apos;</span>, validateRequestPath(schema, { errorStatusCode: <span class="hljs-number">404</span> }), (req, res) =&gt; {
     <span class="hljs-comment">// ...</span>
 })
 </code></pre>
 <p>Now, if the provided <code>:id</code> doesn&apos;t conform to <code>schema</code>, the client will receive a <code>404</code> HTTP status code.</p>
-<h3 id="customizing-joi-options">Customizing Joi options</h3>
-<h3 id="customizing-the-response-error">Customizing the response error</h3>
-<h3 id="adding-logging-support">Adding logging support</h3>
+<p>You can also use a function to determine response status code, which can be useful
+if you have to add some extra logic to define it.</p>
+<pre><code class="lang-typescript">app.get(
+    <span class="hljs-string">&apos;/post/:id&apos;</span>,
+    validateRequestPath(schema, {
+        errorStatusCode: (req: Request, error: ValidationError) =&gt; <span class="hljs-number">401</span>
+    }),
+    (req, res) =&gt; {
+        <span class="hljs-comment">/* ... */</span>
+    }
+)
+</code></pre>
+<h3 id="customizing-error-response-body">Customizing error response body</h3>
+<h3 id="using-your-own-error-handler">Using your own error handler</h3>
 
                                 
                                 </section>
@@ -394,7 +412,7 @@ this option allows you to use another one.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"@ekino/express-validation","level":"1.2.4","depth":2,"next":{"title":"core","level":"1.3","depth":1,"ref":"","articles":[{"title":"@ekino/api-toolkit-validation","level":"1.3.1","depth":2,"path":"packages/api-toolkit-validation/README.md","ref":"packages/api-toolkit-validation/README.md","articles":[]}]},"previous":{"title":"@ekino/express-logger","level":"1.2.3","depth":2,"path":"packages/express-logger/README.md","ref":"packages/express-logger/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"packages/express-validation/README.md","mtime":"2019-02-17T10:51:54.942Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-17T10:55:59.029Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"@ekino/express-validation","level":"1.2.4","depth":2,"next":{"title":"core","level":"1.3","depth":1,"ref":"","articles":[{"title":"@ekino/api-toolkit-validation","level":"1.3.1","depth":2,"path":"packages/api-toolkit-validation/README.md","ref":"packages/api-toolkit-validation/README.md","articles":[]}]},"previous":{"title":"@ekino/express-logger","level":"1.2.3","depth":2,"path":"packages/express-logger/README.md","ref":"packages/express-logger/README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"packages/express-validation/README.md","mtime":"2019-02-17T14:03:36.858Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-17T14:06:47.477Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
