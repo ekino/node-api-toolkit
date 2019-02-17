@@ -1,6 +1,6 @@
 {
   "name": "@ekino/express-logger",
-  "version": "0.2.0-alpha.0",
+  "version": "0.3.0-alpha.0",
   "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -8,8 +8,8 @@
     "lib"
   ],
   "dependencies": {
-    "uuid": "^3.3.2",
-    "on-finished": "^2.3.0"
+    "on-finished": "^2.3.0",
+    "uuid": "^3.3.2"
   },
   "peerDependencies": {
     "@ekino/logger": "https://github.com/ekino/node-logger.git#3b470fab9de160c098665f3aceab220fff5a4711"
