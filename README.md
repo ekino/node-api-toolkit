@@ -2,6 +2,5 @@
 
 packages:
 
-- @ekino/express-logger
-- @ekino/express-validation
-
+-   @ekino/express-logger
+-   @ekino/express-validation

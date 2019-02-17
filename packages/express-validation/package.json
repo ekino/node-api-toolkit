@@ -1,6 +1,23 @@
 {
   "name": "@ekino/express-validation",
   "version": "0.1.0",
-  "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "@ekino/api-toolkit-validation": "0.1.0"
+  },
+  "peerDependencies": {
+    "joi": "^14.3.1"
+  },
+  "devDependencies": {
+    "@types/joi": "^14.3.1",
+    "joi": "^14.3.1"
+  },
+  "scripts": {
+    "tsc": "tsc"
+  }
 }
