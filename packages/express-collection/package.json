@@ -1,6 +1,6 @@
 {
   "name": "@ekino/express-collection",
-  "version": "0.2.0-alpha.0",
+  "version": "0.3.0",
   "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
