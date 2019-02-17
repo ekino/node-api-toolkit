@@ -15,7 +15,7 @@ export interface PaginationState {
     offset: number
 }
 
-export const withPagination = () => {}
+// export const withPagination = () => {}
 
 /*
 'use strict'

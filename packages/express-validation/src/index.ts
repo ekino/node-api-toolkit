@@ -106,20 +106,16 @@ export const validateRequest = (
                 return errorHandler(req, res, validationError as ValidationError)
             }
 
-            let statusCode: number
-            if (typeof errorStatusCode === 'function') {
-                statusCode = errorStatusCode(req, res, validationError as ValidationError)
-            } else {
-                statusCode = errorStatusCode
-            }
+            const statusCode: number =
+                typeof errorStatusCode === 'function'
+                    ? errorStatusCode(req, res, validationError as ValidationError)
+                    : errorStatusCode
 
-            let body: object
             // .data // dto.error.validationError(`${source} validation failed`, validationError.data)
-            if (typeof errorBody === 'function') {
-                body = errorBody(req, res, validationError as ValidationError)
-            } else {
-                body = errorBody
-            }
+            const body: object =
+                typeof errorBody === 'function'
+                    ? errorBody(req, res, validationError as ValidationError)
+                    : errorBody
 
             return res.status(statusCode).json(body)
         }
