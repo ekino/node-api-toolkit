@@ -1,6 +1,7 @@
 # Node.js API toolkit
 
 [![Travis CI](https://img.shields.io/travis/ekino/node-api-toolkit.svg?style=flat-square)](https://travis-ci.org/ekino/node-api-toolkit)
+![GitHub](https://img.shields.io/github/license/ekino/node-api-toolkit.svg?style=flat-square)
 
 :warning: Work in progress :warning: This project is in its early stage, some feature might be missing and some APIs might change in the future.
 
